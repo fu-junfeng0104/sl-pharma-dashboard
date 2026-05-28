@@ -260,6 +260,7 @@ body {
 #landingOverlay {
   position: fixed; inset: 0; z-index: 9999;
   cursor: pointer; user-select: none; -webkit-user-select: none;
+  touch-action: manipulation;
   background: var(--bg-primary);
   font-family: var(--font-ui);
   color: var(--text-primary);
@@ -1298,6 +1299,10 @@ init();
   }
 
   overlay.addEventListener('click', doExit);
+  overlay.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    doExit({ clientX: e.changedTouches[0].clientX, clientY: e.changedTouches[0].clientY });
+  });
 
   // Keyboard support
   document.addEventListener('keydown', function(e) {
