@@ -1213,74 +1213,80 @@ init();
 
     var cx = e.clientX, cy = e.clientY;
 
-    // Pause molecule
-    var mol = document.getElementById('lgMolecule');
-    mol.style.animationPlayState = 'paused';
-    var orbits = mol.querySelectorAll('.mol-orbit.o2');
-    for (var i = 0; i < orbits.length; i++) orbits[i].style.animationPlayState = 'paused';
+    try {
+      // Pause molecule
+      var mol = document.getElementById('lgMolecule');
+      if (mol) {
+        mol.style.animationPlayState = 'paused';
+        var orbits = mol.querySelectorAll('.mol-orbit.o2');
+        for (var i = 0; i < orbits.length; i++) orbits[i].style.animationPlayState = 'paused';
+      }
 
-    // Hide hint
-    var hint = overlay.querySelector('.click-hint');
-    if (hint) { hint.style.transition = 'opacity 0.3s ease-out'; hint.style.opacity = '0'; }
+      // Hide hint
+      var hint = overlay.querySelector('.click-hint');
+      if (hint) { hint.style.transition = 'opacity 0.3s ease-out'; hint.style.opacity = '0'; }
 
-    // Overlay glow
-    var exitOverlay = document.getElementById('lgExitOverlay');
-    exitOverlay.style.setProperty('--ox', cx + 'px');
-    exitOverlay.style.setProperty('--oy', cy + 'px');
-    exitOverlay.classList.add('active');
+      // Overlay glow
+      var exitOverlay = document.getElementById('lgExitOverlay');
+      if (exitOverlay) {
+        exitOverlay.style.setProperty('--ox', cx + 'px');
+        exitOverlay.style.setProperty('--oy', cy + 'px');
+        exitOverlay.classList.add('active');
+      }
 
-    // Ripple ring
-    var ripple = document.createElement('div');
-    ripple.className = 'exit-ripple';
-    ripple.style.left = cx + 'px';
-    ripple.style.top = cy + 'px';
-    ripple.style.transform = 'translate(-50%, -50%)';
-    document.body.appendChild(ripple);
+      // Ripple ring
+      var ripple = document.createElement('div');
+      ripple.className = 'exit-ripple';
+      ripple.style.left = cx + 'px';
+      ripple.style.top = cy + 'px';
+      ripple.style.transform = 'translate(-50%, -50%)';
+      document.body.appendChild(ripple);
 
-    // Burst particles
-    var colors = ['', 'gold', 'blue'];
-    var count = 80;
-    for (var i = 0; i < count; i++) {
-      var bp = document.createElement('div');
-      var cls = 'boom-particle';
-      var c = colors[Math.floor(Math.random() * colors.length)];
-      if (c) cls += ' ' + c;
-      bp.className = cls;
-      var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
-      var dist = Math.random() * 240 + 60;
-      bp.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
-      bp.style.setProperty('--by', Math.sin(angle) * dist + 'px');
-      bp.style.left = cx + 'px';
-      bp.style.top = cy + 'px';
-      var sz = Math.random() * 4 + 2;
-      bp.style.width = sz + 'px';
-      bp.style.height = sz + 'px';
-      bp.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
-      document.body.appendChild(bp);
-    }
+      // Burst particles
+      var colors = ['', 'gold', 'blue'];
+      var count = 80;
+      for (var i = 0; i < count; i++) {
+        var bp = document.createElement('div');
+        var cls = 'boom-particle';
+        var c = colors[Math.floor(Math.random() * colors.length)];
+        if (c) cls += ' ' + c;
+        bp.className = cls;
+        var angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.3;
+        var dist = Math.random() * 240 + 60;
+        bp.style.setProperty('--bx', Math.cos(angle) * dist + 'px');
+        bp.style.setProperty('--by', Math.sin(angle) * dist + 'px');
+        bp.style.left = cx + 'px';
+        bp.style.top = cy + 'px';
+        var sz = Math.random() * 4 + 2;
+        bp.style.width = sz + 'px';
+        bp.style.height = sz + 'px';
+        bp.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+        document.body.appendChild(bp);
+      }
 
-    // Hex shards
-    for (var i = 0; i < 30; i++) {
-      var hs = document.createElement('div');
-      hs.className = 'hex-shard';
-      var a2 = Math.PI * 2 * (i / 30);
-      var d2 = Math.random() * 160 + 40;
-      hs.style.setProperty('--sx', Math.cos(a2) * d2 + 'px');
-      hs.style.setProperty('--sy', Math.sin(a2) * d2 + 'px');
-      hs.style.setProperty('--sr', (Math.random() - 0.5) * 720 + 'deg');
-      hs.style.left = cx + 'px';
-      hs.style.top = cy + 'px';
-      hs.style.animationDuration = (Math.random() * 0.4 + 0.5) + 's';
-      document.body.appendChild(hs);
-    }
+      // Hex shards
+      for (var i = 0; i < 30; i++) {
+        var hs = document.createElement('div');
+        hs.className = 'hex-shard';
+        var a2 = Math.PI * 2 * (i / 30);
+        var d2 = Math.random() * 160 + 40;
+        hs.style.setProperty('--sx', Math.cos(a2) * d2 + 'px');
+        hs.style.setProperty('--sy', Math.sin(a2) * d2 + 'px');
+        hs.style.setProperty('--sr', (Math.random() - 0.5) * 720 + 'deg');
+        hs.style.left = cx + 'px';
+        hs.style.top = cy + 'px';
+        hs.style.animationDuration = (Math.random() * 0.4 + 0.5) + 's';
+        document.body.appendChild(hs);
+      }
 
-    // White flash
-    setTimeout(function() {
-      var wf = document.createElement('div');
-      wf.className = 'white-flash active';
-      document.body.appendChild(wf);
-      setTimeout(function() { wf.classList.remove('active'); }, 200);
-    }, 550);
+      // White flash
+      setTimeout(function() {
+        var wf = document.createElement('div');
+        wf.className = 'white-flash active';
+        document.body.appendChild(wf);
+        setTimeout(function() { wf.classList.remove('active'); }, 200);
+      }, 550);
+    } catch(err) {}
 
     // Fade out landing overlay & reveal dashboard
     setTimeout(function() {
@@ -1288,9 +1294,11 @@ init();
       setTimeout(function() {
         overlay.style.display = 'none';
         // Resize charts after becoming visible
-        setTimeout(function() {
-          Object.values(charts).forEach(function(c) { try { c.resize(); } catch(e) {} });
-        }, 100);
+        try {
+          setTimeout(function() {
+            Object.values(charts).forEach(function(c) { try { c.resize(); } catch(e) {} });
+          }, 100);
+        } catch(e) {}
         // Clean up orphaned animation elements
         var ripples = document.querySelectorAll('.exit-ripple:not(.noanim)');
         for (var r = 0; r < ripples.length; r++) ripples[r].classList.add('noanim');
