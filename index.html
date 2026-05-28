@@ -800,9 +800,7 @@ function loadChinaMap() {
       provinceNameMap[fullName] = fullName;
     });
     chinaGeoLoaded = true;
-    renderCharts();
   } catch(e) { console.warn('Map load failed'); }
-} catch(e) { console.warn('Map load failed'); }
 }
 
 function switchUnit(unit) {
@@ -897,6 +895,8 @@ function renderKPIs() {
 }
 
 function renderCharts() {
+  Object.values(charts).forEach(c => { try { c.dispose(); } catch(e) {} });
+  charts = {};
   const months = ['202601','202602','202603'];
   const monthLabels = ['1月','2月','3月'];
   const mu = displayMetric === 'amount' ? '万元' : '万盒';
@@ -1286,6 +1286,10 @@ init();
       overlay.classList.add('fading');
       setTimeout(function() {
         overlay.style.display = 'none';
+        // Resize charts after becoming visible
+        setTimeout(function() {
+          Object.values(charts).forEach(function(c) { try { c.resize(); } catch(e) {} });
+        }, 100);
         // Clean up orphaned animation elements
         var ripples = document.querySelectorAll('.exit-ripple:not(.noanim)');
         for (var r = 0; r < ripples.length; r++) ripples[r].classList.add('noanim');
